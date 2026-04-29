@@ -3,5 +3,6 @@ bcrypt
 flask_wtf
 flask_csp
 requests
-ipython-sql
+ipython-sql==0.5.0
+prettytable==3.9.0
 jupyterlab
