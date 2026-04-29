@@ -3,3 +3,4 @@ bcrypt
 flask_wtf
 flask_csp
 requests
+ipython-sql

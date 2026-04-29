@@ -12,6 +12,6 @@ CREATE TABLE IF NOT EXISTS client_feedback(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL,
     feedback TEXT NOT NULL
-)
+);
 
-SELECT * FROM users
+SELECT * FROM client_feedback;
