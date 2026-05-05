@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">DevHelp</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            aria-current="page"
+            href="https://sturdy-space-system-5grp7p464vgvc7r5q-5000.app.github.dev/"
+            ><b>Login</b>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/signup.html"><b>Signup</b></a>
+        </li>
+        <li class="nav-item">
+          {% if login %}
+          <a class="nav-link active" href="/index.html"><b>Logout</b></a>
+          {% else %}
+          <a class="nav-link disabled" href="/index.html">Logout</a>
+          {% endif %}
+        </li>
+      </ul>
+      <!-- <form class="d-flex" role="search">
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form> -->
+    </div>
+  </div>
+</nav>
