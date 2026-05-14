@@ -1,7 +1,7 @@
 import sqlite3 as sql
 import bcrypt
 
-db_path = "../../../databases/users/users.db"
+db_path = "../databases/users/users.db"
 
 ### example
 def getUsers():
