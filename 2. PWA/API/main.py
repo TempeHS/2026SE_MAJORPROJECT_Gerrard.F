@@ -11,6 +11,7 @@ csrf = CSRFProtect(app)
 def index():
     return render_template("index.html")
 
+
 @app.route("/signup.html", methods=["GET", "POST"])
 def signup():
     if request.method == "GET":
@@ -38,6 +39,8 @@ def signup():
 
 @app.route("/index.html", methods=["GET", "POST"])
 def login():
+    if request.method == "GET":
+        return render_template("index.html")
     if request.method == "POST":
         email = request.form.get("email", "").strip()
         password = request.form.get("password", "").strip()
@@ -47,7 +50,13 @@ def login():
             return redirect("/form.html")
         else:
             return render_template("/index.html", error="Invalid Credentials")
-        
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/index.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

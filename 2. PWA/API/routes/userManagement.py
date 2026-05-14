@@ -3,31 +3,20 @@ import bcrypt
 
 db_path = "../databases/users/users.db"
 
-### example
-def getUsers():
+
+def insertUser(name, email, password):
     con = sql.connect(db_path)
     cur = con.cursor()
-    cur.execute("SELECT password FROM users")
-    passwords = cur.fetchall()
-    con.close()
-    list_passwords = []
-    for password in passwords:
-        password = password.decode("utf-8")
-        list_passwords.append(password)
-    return list_passwords
-
-
-def insertUser(email, password):
-    con = sql.connect(db_path)
-    cur = con.cursor()
-    cur.execute("SELECT email FROM users WHERE email = ?", (email,))
+    cur.execute("SELECT email FROM users WHERE email = ?", (email,name))
     user = cur.fetchone()
     if user:
-        con.close()
-        return False, "Email already registered"
+        if user[0]:
+            return False, "Email already registered"
+        else:
+            return False, "User already registered"
     hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
     cur.execute(
-        "INSERT INTO users (email, password) VALUES (?,?)", (email, hashed_password)
+        "INSERT INTO users (name, email, password) VALUES (?,?,?)", (name, email, hashed_password)
     )
     con.commit()
     con.close()
