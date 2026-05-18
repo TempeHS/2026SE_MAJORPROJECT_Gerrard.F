@@ -17,19 +17,20 @@ def signup():
     if request.method == "GET":
         return render_template("/signup.html")
     if request.method == "POST":
+        name = request.form.get("name", "").strip()
         email = request.form.get("email", "").strip()
         password = request.form.get("password", "")
         confirm_password = request.form.get("confirm_password", "").strip()
         if confirm_password == password:
             try:
-                success = dbUser.insertUser(email, password)
+                success = dbUser.insertUser(name, email, password)
                 if success:
                     user_id = dbUser.loginUser(email, password)
                     session["user_id"] = user_id
                     return redirect("/form.html")
                 else:
                     return render_template("/signup.html", error="Email already exists")
-            except Exception as e:
+            except Exception:
                 return render_template("/signup.html", error="Fail")
         else:
             return render_template("/signup.html", error="Passwords do not match")
@@ -42,6 +43,7 @@ def login():
     if request.method == "GET":
         return render_template("index.html")
     if request.method == "POST":
+        username = request.form.get("name", "").strip()
         email = request.form.get("email", "").strip()
         password = request.form.get("password", "").strip()
         user_id = dbUser.loginUser(email, password)

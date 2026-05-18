@@ -4,42 +4,36 @@ import bcrypt
 db_path = "../databases/users/users.db"
 
 
-def insertUser(name, email, password):
+def insertUser(username, email, password):
     con = sql.connect(db_path)
     cur = con.cursor()
-    cur.execute("SELECT email FROM users WHERE email = ?", (email,name))
+    cur.execute("SELECT username, email FROM users WHERE email = ?", (email, username))
     user = cur.fetchone()
     if user:
         if user[0]:
             return False, "Email already registered"
         else:
-            return False, "User already registered"
+            return False, "Username already registered"
     hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
     cur.execute(
-        "INSERT INTO users (name, email, password) VALUES (?,?,?)", (name, email, hashed_password)
+        "INSERT INTO users (username, email, password) VALUES (?,?,?)", (username, email, hashed_password)
     )
     con.commit()
     con.close()
     return True
 
 
-def loginUser(email, password):
+def loginUser(identity, password):
     con = sql.connect(db_path)
     cur = con.cursor()
-    cur.execute("SELECT password FROM users WHERE email = ?", (email,))
+    cur.execute("SELECT id, password FROM users WHERE email = ? OR username = ?", (identity, identity))
     user = cur.fetchone()
     con.close()
 
     if user is None:
         return None
 
-    hashed_password = user[0]
-    if bcrypt.checkpw(password.encode("utf-8"), hashed_password):
-        con = sql.connect(db_path)
-        cur = con.cursor()
-        cur.execute("SELECT id FROM users WHERE email = ?", (email,))
-        user_result = cur.fetchone()
-        con.close()
-        return user_result[0]
+    if bcrypt.checkpw(password.encode("utf-8"), user[1]):
+        return user[0]
 
 
