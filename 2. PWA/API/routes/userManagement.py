@@ -7,10 +7,10 @@ db_path = "../databases/users/users.db"
 def insertUser(username, email, password):
     con = sql.connect(db_path)
     cur = con.cursor()
-    cur.execute("SELECT username, email FROM users WHERE email = ?", (email, username))
+    cur.execute("SELECT username, email FROM users WHERE email = ? OR username = ?", (email, username))
     user = cur.fetchone()
     if user:
-        if user[0]:
+        if user[1]:
             return False, "Email already registered"
         else:
             return False, "Username already registered"

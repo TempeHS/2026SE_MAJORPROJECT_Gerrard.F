@@ -17,21 +17,21 @@ def signup():
     if request.method == "GET":
         return render_template("/signup.html")
     if request.method == "POST":
-        name = request.form.get("name", "").strip()
+        username = request.form.get("username", "").strip()
         email = request.form.get("email", "").strip()
         password = request.form.get("password", "")
         confirm_password = request.form.get("confirm_password", "").strip()
         if confirm_password == password:
             try:
-                success = dbUser.insertUser(name, email, password)
-                if success:
+                success = dbUser.insertUser(username, email, password)
+                if success is True:
                     user_id = dbUser.loginUser(email, password)
                     session["user_id"] = user_id
                     return redirect("/form.html")
                 else:
                     return render_template("/signup.html", error="Email already exists")
             except Exception:
-                return render_template("/signup.html", error="Fail")
+                return render_template("/signup.html", error="Registration failed")
         else:
             return render_template("/signup.html", error="Passwords do not match")
     else:
@@ -41,7 +41,7 @@ def signup():
 @app.route("/index.html", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
-        return render_template("index.html")
+        return render_template("index.html", login=False)
     if request.method == "POST":
         username = request.form.get("name", "").strip()
         email = request.form.get("email", "").strip()
