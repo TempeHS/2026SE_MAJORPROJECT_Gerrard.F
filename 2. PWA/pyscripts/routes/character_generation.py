@@ -1,5 +1,7 @@
 import sqlite3
 
+db_path = "../databases/rarities/characters.db"
+
 RARITY_WEIGHTS = {
     'Common':    40,
     'Uncommon':  25,
@@ -16,7 +18,7 @@ def rarity_generation():
     rarity_pct = {rarity: round(weight / total * 100) for rarity, weight in RARITY_WEIGHTS.items()}
 
     # Attach percentages to each level from the DB
-    conn = sqlite3.connect('characters.db')
+    conn = sqlite3.connect(db_path)
     rows = conn.execute("SELECT level, rarity FROM rarities").fetchall()
 
     for level, rarity in rows:
@@ -37,7 +39,7 @@ def generate_character_attributes(species: str, rarity: str) -> dict:
 
 # Layer 3 — DB insertion (parameterised queries only)
 def insert_character(user_id: int, character: dict) -> int:
-    conn = sqlite3.connect('characters.db')
+    conn = sqlite3.connect(db_path)
     conn.execute(
         "INSERT INTO characters (user_id, name, rarity) VALUES (?, ?, ?)",
         (user_id, character['name'], character['rarity'])

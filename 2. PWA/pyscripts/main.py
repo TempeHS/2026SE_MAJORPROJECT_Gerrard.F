@@ -27,7 +27,7 @@ def signup():
                 if success is True:
                     user_id = dbUser.loginUser(email, password)
                     session["user_id"] = user_id
-                    return redirect("/form.html")
+                    return redirect("/mainmenu.html")
                 else:
                     return render_template("/signup.html", error="Email already exists")
             except Exception:
@@ -43,15 +43,29 @@ def login():
     if request.method == "GET":
         return render_template("index.html", login=False)
     if request.method == "POST":
-        username = request.form.get("name", "").strip()
-        email = request.form.get("email", "").strip()
+        identity = request.form.get("identity", "").strip()
         password = request.form.get("password", "").strip()
-        user_id = dbUser.loginUser(email, password)
+        user_id = dbUser.loginUser(identity, password)
         if user_id:
             session["user_id"] = user_id
-            return redirect("/form.html")
+            return redirect("/mainmenu.html")
         else:
             return render_template("/index.html", error="Invalid Credentials")
+        
+@app.route("/mainmenu.html")
+def mainmenu():
+    return render_template("mainmenu.html"
+    "")
+
+
+@app.route("/character-creation")
+def character_creation():
+    return render_template("character_creation.html")
+
+
+@app.route("/gauntlet")
+def gauntlet():
+    return render_template("gauntlet.html")
 
 
 @app.route("/logout")

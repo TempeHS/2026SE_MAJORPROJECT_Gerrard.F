@@ -36,4 +36,9 @@ def loginUser(identity, password):
     if bcrypt.checkpw(password.encode("utf-8"), user[1]):
         return user[0]
 
-
+def showUser(username):
+    con = sql.connect(db_path)
+    cur = con.cursor()
+    cur.execute("SELECT password FROM users WHERE username = ?", (username))
+    password = cur.fetchone()
+    
